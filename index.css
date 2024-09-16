@@ -35,7 +35,7 @@ ul[class] {
 
 .autocomplete__item {
   width: 100%;
-  height: 44px;
+  min-height: 44px;
   padding-left: 13px;
   background-color: #E3E3E3;
   border: solid 2px black;
@@ -50,6 +50,7 @@ ul[class] {
   background-color: #E27BEB;
   margin-top: 45px;
 }
+
 .repo {
   padding: 8px 16px;
   border: solid 1px black;
