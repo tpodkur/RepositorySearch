@@ -1,7 +1,9 @@
 let REPOSITORIES;
 
 function getRepositories(searchText) {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
+    if (!searchText) return resolve();
+
     fetch(`https://api.github.com/search/repositories?q=${searchText}`)
       .then(res => res.json())
       .then(repositories => {
@@ -87,20 +89,22 @@ autocompleteList.addEventListener('click', (event) => {
   let repoElement = createRepoElement(repo);
   if (!isRepositoryInList(repoList, event.target.parentElement)) {
     repoList.appendChild(repoElement);
+    input.value = '';
+    autocompleteList.innerHTML = '';
   }
 });
 
 const getRepositoriesDebounced = debounce(getRepositories, 100, (repositories) => {
   autocompleteList.innerHTML = '';
   if (!repositories || repositories.length === 0) return;
-  for (let i = 0; i < 5; i++) {
+  const autocompleteLength = (repositories.length < 5) ? repositories.length : 5;
+  for (let i = 0; i < autocompleteLength; i++) {
     let listItem = createAutocompleteElement(repositories[i].id, repositories[i].name);
     autocompleteList.appendChild(listItem);
   }
 });
 
 input.addEventListener('keyup', (event) => {
-  if (!event.target.value) return;
   getRepositoriesDebounced(event.target.value);
 });
 
